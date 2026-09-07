@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ôn tập HSK4 – Bài 5</title>
+<style>
+:root{
+ --red:#C0152F; --red-d:#8E1022; --gold:#E0A100; --gold-d:#A06E00;
+ --ink:#1F2126; --muted:#5B616B; --paper:#FBF7F2; --card:#FFFFFF;
+ --line:#E4DDD2; --soft:#FAF3EA;
+ --ok:#178A4C; --ok-bg:#E6F6EC; --no:#C62828; --no-bg:#FBEAEA;
+ /* Latinh -> Times New Roman; chu Han -> Kaiti (fallback theo tung ky tu) */
+ --font:"Times New Roman","Kaiti SC","Kaiti TC","STKaiti","KaiTi","BiauKai","楷体","楷体_GB2312","Songti SC","SimSun",serif;
+ --kai:"Kaiti SC","Kaiti TC","STKaiti","KaiTi","BiauKai","楷体","楷体_GB2312","Songti SC","SimSun",serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+ font-family:var(--font);
+ line-height:1.75;font-size:19px;-webkit-text-size-adjust:100%}
+.zh{font-family:var(--font)}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px 80px}
+header.hero{background:linear-gradient(135deg,var(--red),var(--red-d));color:#fff;padding:28px 16px 24px}
+.hero .wrap{padding-bottom:0}
+.brand{font-size:16px;letter-spacing:.5px;opacity:.95;margin:0 0 6px;font-weight:700}
+.hero h1{margin:0;font-size:31px;line-height:1.28;font-weight:800}
+.hero p.sub{margin:10px 0 0;opacity:.97;font-size:18px}
+.howto{background:#fff;border:1px solid var(--line);border-left:6px solid var(--gold);
+ border-radius:12px;padding:14px 18px;margin:18px 0;font-size:18px;color:#333}
+.howto b{color:var(--red-d)}
+.vocab-toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+ background:var(--soft);border:1px solid var(--line);color:var(--red-d);font-weight:700;
+ padding:11px 18px;border-radius:999px;font-size:18px;margin:2px 0 8px}
+.vocab-box{display:none;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;margin:0 0 14px;max-height:400px;overflow:auto}
+.vocab-box.open{display:block}
+.vocab-box table{width:100%;border-collapse:collapse;font-size:18px}
+.vocab-box td{padding:8px 10px;border-bottom:1px solid var(--soft);vertical-align:top}
+.vocab-box td.h{font-size:30px;white-space:nowrap;width:1%}
+.vocab-box td.p{color:var(--red-d);white-space:nowrap;width:1%;font-size:19px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:6px 0 12px;position:sticky;top:0;background:var(--paper);z-index:5}
+.tab{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--ink);
+ padding:11px 18px;border-radius:999px;cursor:pointer;font-weight:700;font-size:18px;white-space:nowrap;transition:.15s}
+.tab .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#D9D2C7;margin-left:6px;vertical-align:middle}
+.tab.done .dot{background:var(--ok)}
+.tab.active{background:var(--red);color:#fff;border-color:var(--red)}
+.day{display:none}
+.day.active{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.day-head{margin:8px 0 4px}
+.day-head h2{margin:0;font-size:26px;color:var(--red-d);font-weight:800}
+.day-head .focus{color:var(--muted);font-size:18px;margin-top:3px}
+.section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 8px;margin:18px 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.section h3{margin:0 0 3px;font-size:22px;color:var(--ink);font-weight:800}
+.section .note{color:var(--muted);font-size:17px;margin:0 0 14px}
+.passage{background:var(--soft);border-radius:10px;padding:14px 16px;margin:0 0 16px;font-size:26px;line-height:2}
+.q{padding:14px 0;border-top:1px dashed var(--line)}
+.q:first-child{border-top:none}
+.q .stem{font-size:20px;margin:0 0 10px;display:flex;gap:8px;align-items:baseline}
+.q .num{flex:0 0 auto;font-weight:800;color:var(--red);min-width:30px;font-size:20px}
+.q .stem .zh{font-size:27px}
+.hint{color:var(--gold-d);font-size:17px;margin:2px 0 8px 38px}
+.opts{margin:0 0 0 38px;display:flex;flex-direction:column;gap:9px}
+.opts.row{flex-direction:row;flex-wrap:wrap;gap:12px}
+label.opt{display:flex;align-items:center;gap:11px;padding:11px 15px;border:1px solid var(--line);
+ border-radius:10px;cursor:pointer;background:#fff;font-size:20px;transition:.12s}
+label.opt:hover{border-color:var(--gold)}
+label.opt .zh{font-size:26px}
+label.opt input{accent-color:var(--red);width:20px;height:20px;flex:0 0 auto}
+.opts.row label.opt{flex:0 0 auto}
+select.pick,input.txt{font-family:var(--font);font-size:21px;padding:11px 14px;border:1px solid var(--line);
+ border-radius:10px;background:#fff;color:var(--ink);margin-left:38px;max-width:100%}
+select.pick{min-width:260px}
+input.txt{min-width:220px}
+.match-row{display:flex;align-items:center;gap:14px;margin-left:0}
+.match-row .num{min-width:30px;font-weight:800;color:var(--red);font-size:20px}
+.match-row .zh{font-size:30px;min-width:84px}
+textarea.write{width:100%;min-height:96px;font-family:var(--font);font-size:20px;padding:12px 14px;
+ border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);resize:vertical;line-height:1.7}
+.videobox{background:var(--soft);border:1px dashed var(--gold);border-radius:12px;padding:16px}
+.videobox .task{font-size:20px;margin:0 0 12px}
+.videobox .task.zh{font-size:24px;line-height:1.7}
+.done-check{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--red-d);cursor:pointer;font-size:18px}
+.done-check input{width:20px;height:20px;accent-color:var(--ok)}
+.q.correct label.opt.chosen,.q.correct select.pick,.q.correct input.txt{background:var(--ok-bg);border-color:var(--ok)}
+.q.wrong label.opt.chosen,.q.wrong select.pick,.q.wrong input.txt{background:var(--no-bg);border-color:var(--no)}
+.mark{margin-left:8px;font-weight:800;font-size:22px}
+.mark.ok{color:var(--ok)} .mark.no{color:var(--no)}
+.actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:20px 0 6px}
+.btn{border:none;border-radius:999px;padding:14px 26px;font-size:19px;font-weight:800;cursor:pointer;font-family:var(--font)}
+.btn.submit{background:var(--red);color:#fff}
+.btn.submit:hover{background:var(--red-d)}
+.btn.reset{background:#fff;color:var(--red-d);border:1px solid var(--line)}
+.result{display:none;margin:16px 0;padding:18px;border-radius:14px;font-size:20px;background:#fff;border:1px solid var(--line)}
+.result.show{display:block}
+.result .score{font-size:40px;font-weight:900;color:var(--red)}
+.result .bar{height:14px;border-radius:999px;background:#EEE7DD;overflow:hidden;margin:12px 0}
+.result .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--red));width:0;transition:width .6s}
+.result .msg{margin-top:6px;font-weight:700}
+.result .note2{color:var(--muted);font-size:17px;margin-top:10px}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:17px;text-align:center;padding:24px 16px;margin-top:24px}
+footer b{color:var(--red-d)}
+@media(max-width:560px){
+ .hero h1{font-size:25px}.section{padding:15px 13px 5px}
+ select.pick{min-width:0;width:100%}.match-row{flex-wrap:wrap}
+ .opts,.hint,select.pick,input.txt{margin-left:0}
+ .q .stem .num{min-width:24px}
+ .passage{font-size:23px}
+}
+</style></head>
+<body>
+<header class="hero"><div class="wrap">
+  <p class="brand">TIẾNG TRUNG NHẬT ANH · 汉语不太难</p>
+  <h1>ÔN TẬP HSK4 · Bài 5 <span class="zh">《只买对的，不买贵的》</span></h1>
+  <p class="sub">Lộ trình 5 ngày · Từ vựng – Ngữ pháp – Đọc hiểu – Nói (kèm Bài 6 <span class="zh">一分钱一分货</span>)</p>
+</div></header>
+<div class="wrap">
+  <div class="howto">
+    <b>Cách làm:</b> Mỗi ngày làm 1 tab. Chọn / gõ đáp án trực tiếp, xong bấm <b>“Nộp bài Ngày…”</b>.
+    Hệ thống chỉ báo <b>em đúng bao nhiêu / sai bao nhiêu câu</b> (tô xanh – đỏ) chứ <b>không hiện đáp án</b> —
+    hãy tự sửa câu đỏ, đáp án đầy đủ hỏi cô nhé. Bài làm được lưu tự động trên máy em.
+  </div>
+  <div class="vocab-toggle" onclick="toggleVocab()">📖 Bảng từ vựng (bấm để xem / ẩn)</div>
+  <div class="vocab-box" id="vocabBox"></div>
+  <div class="tabs" id="tabs"></div>
+  <div id="days"></div>
+</div>
+<footer>Biên soạn bởi <b>Tiếng Trung Nhật Anh</b> · Giáo trình chuẩn HSK4 (Tập 1) – Bài 5 &amp; Bài 6<br>
+Học vui – nhớ lâu – nói được 💪</footer>
+<script>
+const MODEL = {"days": [{"title": "Ngày 1 · Từ vựng (Phần 1)", "focus": "家具 · mua sắm · nhận mặt chữ & pinyin (từ 1–14)", "sections": [{"title": "Phần A · Trắc nghiệm: chọn nghĩa đúng", "note": "Chọn nghĩa tiếng Việt đúng của từ.", "passage": null, "pool": null, "qs": [{"id": "d0s0q0", "type": "mc", "q": "家具", "opts": ["đồ dùng trong nhà (đồ nội thất)", "căn nhà", "gia đình", "việc nhà"]}, {"id": "d0s0q1", "type": "mc", "q": "打折", "opts": ["gấp đôi", "giảm giá", "mặc cả", "trả góp"]}, {"id": "d0s0q2", "type": "mc", "q": "质量", "opts": ["số lượng", "trọng lượng", "chất lượng", "chất vấn"]}, {"id": "d0s0q3", "type": "mc", "q": "肯定", "opts": ["phủ định", "chắc chắn, nhất định", "có lẽ", "nghi ngờ"]}, {"id": "d0s0q4", "type": "mc", "q": "顺便", "opts": ["nhân tiện, tiện thể", "thuận lợi", "tùy tiện", "lập tức"]}, {"id": "d0s0q5", "type": "mc", "q": "现金", "opts": ["hiện tại", "tiền mặt", "tiền lẻ", "tiền thừa"]}]}, {"title": "Phần B · Điền pinyin", "note": "Gõ pinyin của từ (có dấu hoặc không dấu đều được, ví dụ: shāfā = shafa).", "passage": null, "pool": null, "qs": [{"id": "d0s1q0", "type": "fill", "q": "沙发"}, {"id": "d0s1q1", "type": "fill", "q": "价格"}, {"id": "d0s1q2", "type": "fill", "q": "流行"}, {"id": "d0s1q3", "type": "fill", "q": "效果"}, {"id": "d0s1q4", "type": "fill", "q": "实在"}, {"id": "d0s1q5", "type": "fill", "q": "制冷"}]}, {"title": "Phần C · Nối từ với nghĩa", "note": "Chọn nghĩa đúng cho mỗi từ Hán.", "passage": null, "pool": ["đồ nội thất", "chỉ, chỉ có", "giảm giá", "tiền mặt", "chất lượng", "lượng từ (máy móc): cái/chiếc"], "qs": [{"id": "d0s2q0", "type": "select", "q": "台", "opts": ["đồ nội thất", "chỉ, chỉ có", "giảm giá", "tiền mặt", "chất lượng", "lượng từ (máy móc): cái/chiếc"]}, {"id": "d0s2q1", "type": "select", "q": "光", "opts": ["đồ nội thất", "chỉ, chỉ có", "giảm giá", "tiền mặt", "chất lượng", "lượng từ (máy móc): cái/chiếc"]}, {"id": "d0s2q2", "type": "select", "q": "打折", "opts": ["đồ nội thất", "chỉ, chỉ có", "giảm giá", "tiền mặt", "chất lượng", "lượng từ (máy móc): cái/chiếc"]}, {"id": "d0s2q3", "type": "select", "q": "现金", "opts": ["đồ nội thất", "chỉ, chỉ có", "giảm giá", "tiền mặt", "chất lượng", "lượng từ (máy móc): cái/chiếc"]}, {"id": "d0s2q4", "type": "select", "q": "质量", "opts": ["đồ nội thất", "chỉ, chỉ có", "giảm giá", "tiền mặt", "chất lượng", "lượng từ (máy móc): cái/chiếc"]}, {"id": "d0s2q5", "type": "select", "q": "家具", "opts": ["đồ nội thất", "chỉ, chỉ có", "giảm giá", "tiền mặt", "chất lượng", "lượng từ (máy móc): cái/chiếc"]}]}, {"title": "Phần D · Chọn từ điền vào chỗ trống", "note": "Chọn từ trong khung điền vào ô ＿＿.", "passage": null, "pool": ["打折", "质量", "现金", "顺便", "台"], "qs": [{"id": "d0s3q0", "type": "select", "q": "这个沙发正在＿＿，比平时便宜一千块。", "opts": ["打折", "质量", "现金", "顺便", "台"]}, {"id": "d0s3q1", "type": "select", "q": "价格还可以，就是不知道＿＿有没有保证。", "opts": ["打折", "质量", "现金", "顺便", "台"]}, {"id": "d0s3q2", "type": "select", "q": "我带的＿＿不够，用你的信用卡吧。", "opts": ["打折", "质量", "现金", "顺便", "台"]}, {"id": "d0s3q3", "type": "select", "q": "商场正好打折，我们＿＿也买一台冰箱吧。", "opts": ["打折", "质量", "现金", "顺便", "台"]}, {"id": "d0s3q4", "type": "select", "q": "咱家的冰箱太旧了，买一＿＿新的吧。", "opts": ["打折", "质量", "现金", "顺便", "台"]}]}, {"title": "Phần E · Viết (cô chấm)", "note": "Phần này không tự chấm điểm — em viết vào ô, cô sẽ xem và sửa.", "passage": null, "pool": null, "qs": [{"id": "d0s4q0", "type": "open", "q": "Viết lại 5 từ mới em thấy KHÓ NHỚ nhất hôm nay (chữ Hán + pinyin + nghĩa)."}, {"id": "d0s4q1", "type": "open", "q": "Đặt 2 câu: một câu dùng 打折, một câu dùng 质量."}]}, {"title": "Phần F · Thực hành nói (quay video)", "note": "Quay 1 video ngắn nộp cho cô.", "passage": null, "pool": null, "qs": [{"id": "d0s5q0", "type": "video", "q": "🎥 Quay video 30–60 giây: Giới thiệu một món đồ em từng mua khi đang 打折 — món gì, 价格 bao nhiêu, 质量 thế nào, em trả bằng 现金 hay thẻ. Dùng ít nhất 4 từ mới của Ngày 1."}]}]}, {"title": "Ngày 2 · Từ vựng (Phần 2)", "focus": "từ 15–31 (Bài 5) + 11 từ Bài 6 · nghĩa & pinyin", "sections": [{"title": "Phần A · Trắc nghiệm: chọn nghĩa đúng", "note": "Chọn nghĩa tiếng Việt đúng của từ.", "passage": null, "pool": null, "qs": [{"id": "d1s0q0", "type": "mc", "q": "邀请", "opts": ["mời", "yêu cầu", "hoan nghênh", "từ chối"]}, {"id": "d1s0q1", "type": "mc", "q": "广告", "opts": ["thông báo", "quảng cáo", "báo cáo", "quảng trường"]}, {"id": "d1s0q2", "type": "mc", "q": "优点", "opts": ["khuyết điểm", "ưu điểm", "đặc điểm", "địa điểm"]}, {"id": "d1s0q3", "type": "mc", "q": "考虑", "opts": ["khảo thí", "suy xét, cân nhắc", "lo lắng", "khó khăn"]}, {"id": "d1s0q4", "type": "mc", "q": "浪费", "opts": ["tiết kiệm", "lãng phí", "lãng mạn", "tiêu dùng"]}, {"id": "d1s0q5", "type": "mc", "q": "尤其", "opts": ["đặc biệt là, nhất là", "vẫn còn", "hơn nữa", "tuy nhiên"]}, {"id": "d1s0q6", "type": "mc", "q": "任何", "opts": ["bất cứ, bất kỳ", "như thế nào", "nhiệm vụ", "bất ngờ"]}]}, {"title": "Phần B · Điền pinyin", "note": "Gõ pinyin của từ (có dấu hoặc không dấu đều được).", "passage": null, "pool": null, "qs": [{"id": "d1s1q0", "type": "fill", "q": "味道"}, {"id": "d1s1q1", "type": "fill", "q": "标准"}, {"id": "d1s1q2", "type": "fill", "q": "年龄"}, {"id": "d1s1q3", "type": "fill", "q": "购物"}, {"id": "d1s1q4", "type": "fill", "q": "西红柿"}, {"id": "d1s1q5", "type": "fill", "q": "售货员"}]}, {"title": "Phần C · Nối từ với nghĩa (Bài 6)", "note": "Chọn nghĩa đúng cho mỗi từ Hán.", "passage": null, "pool": ["nước trái cây", "tất, vớ", "làm phiền, quấy rầy", "da", "lợi ích, điều tốt", "nếm, thưởng thức"], "qs": [{"id": "d1s2q0", "type": "select", "q": "果汁", "opts": ["nước trái cây", "tất, vớ", "làm phiền, quấy rầy", "da", "lợi ích, điều tốt", "nếm, thưởng thức"]}, {"id": "d1s2q1", "type": "select", "q": "袜子", "opts": ["nước trái cây", "tất, vớ", "làm phiền, quấy rầy", "da", "lợi ích, điều tốt", "nếm, thưởng thức"]}, {"id": "d1s2q2", "type": "select", "q": "打扰", "opts": ["nước trái cây", "tất, vớ", "làm phiền, quấy rầy", "da", "lợi ích, điều tốt", "nếm, thưởng thức"]}, {"id": "d1s2q3", "type": "select", "q": "皮肤", "opts": ["nước trái cây", "tất, vớ", "làm phiền, quấy rầy", "da", "lợi ích, điều tốt", "nếm, thưởng thức"]}, {"id": "d1s2q4", "type": "select", "q": "好处", "opts": ["nước trái cây", "tất, vớ", "làm phiền, quấy rầy", "da", "lợi ích, điều tốt", "nếm, thưởng thức"]}, {"id": "d1s2q5", "type": "select", "q": "尝", "opts": ["nước trái cây", "tất, vớ", "làm phiền, quấy rầy", "da", "lợi ích, điều tốt", "nếm, thưởng thức"]}]}, {"title": "Phần D · Chọn từ điền vào chỗ trống", "note": "Chọn từ trong khung điền vào ô ＿＿.", "passage": null, "pool": ["邀请", "味道", "浪费", "购物", "竟然", "好处"], "qs": [{"id": "d1s3q0", "type": "select", "q": "李老师＿＿咱们去他家做客。", "opts": ["邀请", "味道", "浪费", "购物", "竟然", "好处"]}, {"id": "d1s3q1", "type": "select", "q": "这种葡萄酒的＿＿应该不错。", "opts": ["邀请", "味道", "浪费", "购物", "竟然", "好处"]}, {"id": "d1s3q2", "type": "select", "q": "如果不适合自己，即使花钱很少，也是一种＿＿。", "opts": ["邀请", "味道", "浪费", "购物", "竟然", "好处"]}, {"id": "d1s3q3", "type": "select", "q": "现在网上＿＿变得越来越流行了。", "opts": ["邀请", "味道", "浪费", "购物", "竟然", "好处"]}, {"id": "d1s3q4", "type": "select", "q": "回家以后我才发现，＿＿忘了买果汁！", "opts": ["邀请", "味道", "浪费", "购物", "竟然", "好处"]}, {"id": "d1s3q5", "type": "select", "q": "每天吃一两个西红柿，对皮肤有＿＿。", "opts": ["邀请", "味道", "浪费", "购物", "竟然", "好处"]}]}, {"title": "Phần E · Đúng / Sai", "note": "Nhận định về nghĩa của từ đúng hay sai?", "passage": null, "pool": null, "qs": [{"id": "d1s4q0", "type": "tf", "q": "“尤其” nghĩa là “đặc biệt là, nhất là”.", "opts": ["Đúng", "Sai"]}, {"id": "d1s4q1", "type": "tf", "q": "“受到” nghĩa là “gửi đi”.", "opts": ["Đúng", "Sai"]}, {"id": "d1s4q2", "type": "tf", "q": "“样子” nghĩa là “kiểu dáng, hình dáng”.", "opts": ["Đúng", "Sai"]}, {"id": "d1s4q3", "type": "tf", "q": "“竟然” dùng để diễn tả sự bất ngờ, không ngờ.", "opts": ["Đúng", "Sai"]}, {"id": "d1s4q4", "type": "tf", "q": "“倍” nghĩa là “phần trăm”.", "opts": ["Đúng", "Sai"]}]}, {"title": "Phần F · Viết (cô chấm)", "note": "Viết vào ô, cô sẽ xem và sửa.", "passage": null, "pool": null, "qs": [{"id": "d1s5q0", "type": "open", "q": "Đặt 1 câu với 邀请 (mời ai đó làm gì)."}, {"id": "d1s5q1", "type": "open", "q": "Dùng 越来越 viết 1 câu về một xu hướng hiện nay (ví dụ mua sắm online)."}]}, {"title": "Phần G · Thực hành nói (quay video)", "note": "Quay 1 video ngắn nộp cho cô.", "passage": null, "pool": null, "qs": [{"id": "d1s6q0", "type": "video", "q": "🎥 Quay video 45–60 giây: Kể một lần em đi 购物 (siêu thị hoặc online) — mua gì, 味道/质量 ra sao, 售货员 thế nào, có 邀请 ai đi cùng không. Dùng ít nhất 4 từ mới."}]}]}, {"title": "Ngày 3 · Ngữ pháp & Mẫu câu", "focus": "肯定 · 再说 · 实际/实际上 · 对……来说 · 尤其/特别 · 越来越 · 光", "sections": [{"title": "Phần A · Chọn đáp án đúng", "note": "Chọn từ/mẫu câu phù hợp điền vào ô ＿＿.", "passage": null, "pool": null, "qs": [{"id": "d2s0q0", "type": "mc", "q": "你放心，质量＿＿不“打折”。", "opts": ["肯定", "可能", "也许", "大概"]}, {"id": "d2s0q1", "type": "mc", "q": "＿＿我来说，衣服的样子并不重要。", "opts": ["对", "把", "向", "给"]}, {"id": "d2s0q2", "type": "mc", "q": "现在网上购物变得＿＿流行了。", "opts": ["越来越", "比较", "非常", "太"]}, {"id": "d2s0q3", "type": "mc", "q": "年轻人＿＿喜欢在网上买东西。", "opts": ["尤其", "尤", "特", "尤是"]}, {"id": "d2s0q4", "type": "mc", "q": "今天买的东西太多了。＿＿，这个月已经花了五千多了。", "opts": ["再说", "再见", "再来", "说再"]}, {"id": "d2s0q5", "type": "mc", "q": "＿＿，很多东西并不像广告上说的那么好。", "opts": ["实际上", "实在", "实现", "现实"]}, {"id": "d2s0q6", "type": "mc", "q": "她换上新买的鞋，看上去＿＿好看。", "hint": "Chỗ này nghĩa “格外 / 非常” — chỉ một trong hai từ dùng được.", "opts": ["特别", "尤其"]}, {"id": "d2s0q7", "type": "mc", "q": "上个星期＿＿买沙发就花了两千多。", "opts": ["光", "台", "倍", "顺便"]}]}, {"title": "Phần B · Nối câu với chức năng ngữ pháp", "note": "Mỗi câu dùng từ/mẫu theo chức năng nào?", "passage": null, "pool": ["再说 – động từ (để sau hãy tính)", "再说 – liên từ (hơn nữa, vả lại)", "实际 – tính từ (thực tế, cụ thể)", "实际上 – phó từ (trên thực tế)", "对……来说 (đối với... mà nói)"], "qs": [{"id": "d2s1q0", "type": "select", "q": "现在的事，做了；以后的事，以后再说。", "opts": ["再说 – động từ (để sau hãy tính)", "再说 – liên từ (hơn nữa, vả lại)", "实际 – tính từ (thực tế, cụ thể)", "实际上 – phó từ (trên thực tế)", "对……来说 (đối với... mà nói)"]}, {"id": "d2s1q1", "type": "select", "q": "今天买的东西太多了，再说这个月已经花了五千多。", "opts": ["再说 – động từ (để sau hãy tính)", "再说 – liên từ (hơn nữa, vả lại)", "实际 – tính từ (thực tế, cụ thể)", "实际上 – phó từ (trên thực tế)", "对……来说 (đối với... mà nói)"]}, {"id": "d2s1q2", "type": "select", "q": "实际工作能让我更理解书本上的知识。", "opts": ["再说 – động từ (để sau hãy tính)", "再说 – liên từ (hơn nữa, vả lại)", "实际 – tính từ (thực tế, cụ thể)", "实际上 – phó từ (trên thực tế)", "对……来说 (đối với... mà nói)"]}, {"id": "d2s1q3", "type": "select", "q": "实际上，很多东西并不像广告说的那么好。", "opts": ["再说 – động từ (để sau hãy tính)", "再说 – liên từ (hơn nữa, vả lại)", "实际 – tính từ (thực tế, cụ thể)", "实际上 – phó từ (trên thực tế)", "对……来说 (đối với... mà nói)"]}, {"id": "d2s1q4", "type": "select", "q": "对我来说，样子并不重要。", "opts": ["再说 – động từ (để sau hãy tính)", "再说 – liên từ (hơn nữa, vả lại)", "实际 – tính từ (thực tế, cụ thể)", "实际上 – phó từ (trên thực tế)", "对……来说 (đối với... mà nói)"]}]}, {"title": "Phần C · Chọn mẫu câu điền vào chỗ trống", "note": "Chọn từ/mẫu trong khung điền vào ô ＿＿.", "passage": null, "pool": ["肯定", "再说", "实际上", "对……来说", "尤其"], "qs": [{"id": "d2s2q0", "type": "select", "q": "别担心，他＿＿会来的。", "opts": ["肯定", "再说", "实际上", "对……来说", "尤其"]}, {"id": "d2s2q1", "type": "select", "q": "我不想去，太远了，＿＿我也没时间。", "opts": ["肯定", "再说", "实际上", "对……来说", "尤其"]}, {"id": "d2s2q2", "type": "select", "q": "广告说得很好，但＿＿产品一般般。", "opts": ["肯定", "再说", "实际上", "对……来说", "尤其"]}, {"id": "d2s2q3", "type": "select", "q": "＿＿，我觉得价格没有质量重要。", "opts": ["肯定", "再说", "实际上", "对……来说", "尤其"]}, {"id": "d2s2q4", "type": "select", "q": "我喜欢运动，＿＿是打羽毛球。", "opts": ["肯定", "再说", "实际上", "对……来说", "尤其"]}]}, {"title": "Phần D · Sắp xếp thành câu đúng", "note": "Gõ thứ tự các chữ cái để tạo câu đúng, ví dụ: B A C", "passage": null, "pool": null, "qs": [{"id": "d2s3q0", "type": "order", "q": "【A 肯定】【B 这个沙发的质量】【C 很好】", "frags": ["A 肯定", "B 这个沙发的质量", "C 很好"]}, {"id": "d2s3q1", "type": "order", "q": "【A 来说】【B 对我】【C 价格最重要】", "frags": ["A 来说", "B 对我", "C 价格最重要"]}, {"id": "d2s3q2", "type": "order", "q": "【A 越来越】【B 网上购物】【C 流行了】【D 变得】", "frags": ["A 越来越", "B 网上购物", "C 流行了", "D 变得"]}, {"id": "d2s3q3", "type": "order", "q": "【A 尤其】【B 我喜欢水果】【C 是葡萄】", "frags": ["A 尤其", "B 我喜欢水果", "C 是葡萄"]}]}, {"title": "Phần E · Viết (cô chấm)", "note": "Viết vào ô, cô sẽ xem và sửa.", "passage": null, "pool": null, "qs": [{"id": "d2s4q0", "type": "open", "q": "Đặt 1 câu với 对……来说."}, {"id": "d2s4q1", "type": "open", "q": "Đặt 1 câu với 再说 (nghĩa “hơn nữa”)."}, {"id": "d2s4q2", "type": "open", "q": "Đặt 1 câu với 越来越."}]}, {"title": "Phần F · Thực hành nói (quay video)", "note": "Quay 1 video ngắn nộp cho cô.", "passage": null, "pool": null, "qs": [{"id": "d2s5q0", "type": "video", "q": "🎥 Quay video 60 giây: Nêu 标准 (tiêu chuẩn) của em khi mua quần áo, dùng ít nhất 3 mẫu câu: 对我来说……, 尤其……, 实际上……"}]}]}, {"title": "Ngày 4 · Đọc hiểu & Vận dụng", "focus": "đọc đoạn văn · hoàn thành hội thoại · điền đoạn · viết vận dụng", "sections": [{"title": "Phần A · Đọc đoạn văn 1", "note": "Đọc đoạn trên rồi trả lời.", "passage": "买衣服只考虑价格当然不好，但是只考虑买好看的也不一定对。我买衣服的标准是“只买对的，不买贵的”。第一，自己穿着舒服；第二，衣服的质量要好，而且又不能太贵。对我来说，衣服的样子流行不流行并不很重要。", "pool": null, "qs": [{"id": "d3s0q0", "type": "mc", "q": "作者买衣服最重要的标准是什么？", "opts": ["便宜", "好看", "合适（对的）而且质量好", "流行"]}, {"id": "d3s0q1", "type": "tf", "q": "对作者来说，衣服流行不流行非常重要。", "opts": ["Đúng", "Sai"]}, {"id": "d3s0q2", "type": "mc", "q": "“只买对的，不买贵的” nghĩa gần nhất là:", "opts": ["chỉ mua đồ hợp/đúng, không mua đồ đắt", "chỉ mua đồ đắt tiền", "chỉ mua đồ rẻ nhất", "không mua gì cả"]}]}, {"title": "Phần B · Đọc đoạn văn 2", "note": "Đọc đoạn trên rồi trả lời.", "passage": "现在网上购物变得越来越流行了，年轻人尤其喜欢在网上买东西。网上购物受到人们喜爱的原因主要有两个：首先，网上的东西很多，而且比商店便宜；其次，人们可以在任何时间上网买东西，卖家可以把东西寄到办公室或者家里，非常方便。", "pool": null, "qs": [{"id": "d3s1q0", "type": "mc", "q": "网上购物受欢迎的原因有几个？", "opts": ["一个", "两个", "三个", "四个"]}, {"id": "d3s1q1", "type": "mc", "q": "谁尤其喜欢网上购物？", "opts": ["老人", "年轻人", "孩子", "售货员"]}, {"id": "d3s1q2", "type": "tf", "q": "网上的东西比商店贵。", "opts": ["Đúng", "Sai"]}, {"id": "d3s1q3", "type": "tf", "q": "卖家可以把东西寄到家里或者办公室。", "opts": ["Đúng", "Sai"]}]}, {"title": "Phần C · Hoàn thành hội thoại", "note": "Chọn câu trả lời phù hợp cho mỗi câu hỏi.", "passage": null, "pool": ["现在正在打折，比平时便宜一千块。", "我带的现金不够，用信用卡吧。", "这个蓝色的看上去不错，就要这个吧。", "七块钱一斤，保证百分之百新鲜。"], "qs": [{"id": "d3s2q0", "type": "select", "q": "A：这个沙发怎么样？　B：＿＿", "opts": ["现在正在打折，比平时便宜一千块。", "我带的现金不够，用信用卡吧。", "这个蓝色的看上去不错，就要这个吧。", "七块钱一斤，保证百分之百新鲜。"]}, {"id": "d3s2q1", "type": "select", "q": "A：你打算用现金还是信用卡？　B：＿＿", "opts": ["现在正在打折，比平时便宜一千块。", "我带的现金不够，用信用卡吧。", "这个蓝色的看上去不错，就要这个吧。", "七块钱一斤，保证百分之百新鲜。"]}, {"id": "d3s2q2", "type": "select", "q": "A：你决定买哪个沙发？　B：＿＿", "opts": ["现在正在打折，比平时便宜一千块。", "我带的现金不够，用信用卡吧。", "这个蓝色的看上去不错，就要这个吧。", "七块钱一斤，保证百分之百新鲜。"]}, {"id": "d3s2q3", "type": "select", "q": "A：西红柿新鲜吗？怎么卖？　B：＿＿", "opts": ["现在正在打折，比平时便宜一千块。", "我带的现金不够，用信用卡吧。", "这个蓝色的看上去不错，就要这个吧。", "七块钱一斤，保证百分之百新鲜。"]}]}, {"title": "Phần D · Điền từ hoàn thành đoạn văn", "note": "Chọn từ trong khung điền vào các số ①–⑤ ở đoạn trên.", "passage": "咱家的冰箱太旧了，商场正好①＿＿，我们②＿＿也买一③＿＿吧。这种冰箱④＿＿不错，价格也合适。我带的⑤＿＿不够，用你的信用卡吧。", "pool": ["打折", "顺便", "质量", "现金", "台"], "qs": [{"id": "d3s3q0", "type": "select", "q": "① →", "opts": ["打折", "顺便", "质量", "现金", "台"]}, {"id": "d3s3q1", "type": "select", "q": "② →", "opts": ["打折", "顺便", "质量", "现金", "台"]}, {"id": "d3s3q2", "type": "select", "q": "③ →", "opts": ["打折", "顺便", "质量", "现金", "台"]}, {"id": "d3s3q3", "type": "select", "q": "④ →", "opts": ["打折", "顺便", "质量", "现金", "台"]}, {"id": "d3s3q4", "type": "select", "q": "⑤ →", "opts": ["打折", "顺便", "质量", "现金", "台"]}]}, {"title": "Phần E · Viết – Vận dụng thực tế (cô chấm)", "note": "Viết vào ô, cô sẽ xem và sửa.", "passage": null, "pool": null, "qs": [{"id": "d3s4q0", "type": "open", "q": "Viết đoạn ngắn 4–5 câu: “标准 mua đồ của em” (dùng ít nhất 5 từ mới của Bài 5)."}, {"id": "d3s4q1", "type": "open", "q": "Trả lời: 你更喜欢网上购物还是去商店买东西？为什么？(viết 3–4 câu)"}]}, {"title": "Phần F · Thực hành nói (quay video)", "note": "Quay 1 video ngắn nộp cho cô.", "passage": null, "pool": null, "qs": [{"id": "d3s5q0", "type": "video", "q": "🎥 Quay video 60–90 giây: Đóng vai 售货员 giới thiệu một sản phẩm (sofa / tủ lạnh / nho…) cho khách — nói 价格, 质量, 优点, có đang 打折 không. Dùng ít nhất 5 từ mới."}]}]}, {"title": "Ngày 5 · Tổng hợp & Thực hành nói", "focus": "ôn tổng hợp toàn bộ · dịch câu · bài nói tổng kết", "sections": [{"title": "Phần A · Trắc nghiệm tổng hợp", "note": "Chọn từ phù hợp điền vào ô ＿＿.", "passage": null, "pool": null, "qs": [{"id": "d4s0q0", "type": "mc", "q": "＿＿我来说，质量比价格更重要。", "opts": ["对", "给", "向", "把"]}, {"id": "d4s0q1", "type": "mc", "q": "这家饭馆的面＿＿很不错。", "opts": ["味道", "样子", "效果", "年龄"]}, {"id": "d4s0q2", "type": "mc", "q": "网上的东西很多，而且比商店＿＿。", "opts": ["贵", "便宜", "流行", "浪费"]}, {"id": "d4s0q3", "type": "mc", "q": "需要就说，不会＿＿你的。", "opts": ["邀请", "打扰", "受到", "顺便"]}, {"id": "d4s0q4", "type": "mc", "q": "这种手机是今年最＿＿的。", "opts": ["流行", "浪费", "标准", "年龄"]}, {"id": "d4s0q5", "type": "mc", "q": "每天吃西红柿对＿＿有好处。", "opts": ["皮肤", "味道", "效果", "广告"]}]}, {"title": "Phần B · Điền pinyin tổng hợp", "note": "Gõ pinyin của từ (có dấu hoặc không dấu đều được).", "passage": null, "pool": null, "qs": [{"id": "d4s1q0", "type": "fill", "q": "考虑"}, {"id": "d4s1q1", "type": "fill", "q": "广告"}, {"id": "d4s1q2", "type": "fill", "q": "年龄"}, {"id": "d4s1q3", "type": "fill", "q": "邀请"}, {"id": "d4s1q4", "type": "fill", "q": "好处"}]}, {"title": "Phần C · Chọn từ điền vào chỗ trống", "note": "Chọn từ trong khung điền vào ô ＿＿.", "passage": null, "pool": ["尤其", "实际上", "肯定", "越来越", "任何", "竟然"], "qs": [{"id": "d4s2q0", "type": "select", "q": "你放心，他＿＿会帮你的。", "opts": ["尤其", "实际上", "肯定", "越来越", "任何", "竟然"]}, {"id": "d4s2q1", "type": "select", "q": "天气＿＿冷了。", "opts": ["尤其", "实际上", "肯定", "越来越", "任何", "竟然"]}, {"id": "d4s2q2", "type": "select", "q": "我喜欢运动，＿＿是游泳。", "opts": ["尤其", "实际上", "肯定", "越来越", "任何", "竟然"]}, {"id": "d4s2q3", "type": "select", "q": "广告说得好，＿＿产品很一般。", "opts": ["尤其", "实际上", "肯定", "越来越", "任何", "竟然"]}, {"id": "d4s2q4", "type": "select", "q": "你可以在＿＿时间上网买东西。", "opts": ["尤其", "实际上", "肯定", "越来越", "任何", "竟然"]}, {"id": "d4s2q5", "type": "select", "q": "回到家我才发现，＿＿忘了买果汁。", "opts": ["尤其", "实际上", "肯定", "越来越", "任何", "竟然"]}]}, {"title": "Phần D · Đúng / Sai (theo nội dung bài)", "note": "Nhận định đúng hay sai?", "passage": null, "pool": null, "qs": [{"id": "d4s3q0", "type": "tf", "q": "王静最后买了蓝色的沙发。", "opts": ["Đúng", "Sai"]}, {"id": "d4s3q1", "type": "tf", "q": "李进买东西喜欢被售货员打扰。", "opts": ["Đúng", "Sai"]}, {"id": "d4s3q2", "type": "tf", "q": "“一分钱一分货” nghĩa là “tiền nào của nấy”.", "opts": ["Đúng", "Sai"]}, {"id": "d4s3q3", "type": "tf", "q": "网上购物只能在白天买东西。", "opts": ["Đúng", "Sai"]}]}, {"title": "Phần E · Dịch câu Việt → Trung (cô chấm)", "note": "Viết câu tiếng Trung vào ô, dùng từ gợi ý trong ngoặc.", "passage": null, "pool": null, "qs": [{"id": "d4s4q0", "type": "open", "q": "Cái sofa này đang giảm giá, rẻ hơn ngày thường 1000 tệ. (打折)"}, {"id": "d4s4q1", "type": "open", "q": "Đối với tôi, chất lượng quan trọng hơn giá cả. (对……来说 / 质量 / 价格)"}, {"id": "d4s4q2", "type": "open", "q": "Mua sắm online ngày càng thịnh hành. (越来越 / 购物)"}]}, {"title": "Phần F · Bài nói tổng kết (quay video)", "note": "Đây là sản phẩm đầu ra cuối khoá để cô chấm điểm nói.", "passage": null, "pool": null, "qs": [{"id": "d4s5q0", "type": "video", "q": "🎥 Quay video 90–120 giây – Chủ đề “我的购物观 (Quan điểm mua sắm của tôi)”. Nói về: (1) 标准 khi mua đồ; (2) thích 网上购物 hay đến 商店, vì sao; (3) một lần mua đồ đáng nhớ (打折 / 质量 / 浪费…). Dùng ít nhất 8 từ mới + 3 mẫu câu (对……来说, 尤其, 越来越, 实际上, 再说)."}]}]}]};
+const VOCAB = [["家具", "jiājù", "đồ dùng trong nhà (đồ nội thất)"], ["沙发", "shāfā", "ghế sô pha"], ["打折", "dǎ zhé", "giảm giá"], ["价格", "jiàgé", "giá cả"], ["质量", "zhìliàng", "chất lượng"], ["肯定", "kěndìng", "chắc chắn, nhất định"], ["流行", "liúxíng", "thịnh hành, được ưa chuộng"], ["顺便", "shùnbiàn", "nhân tiện, tiện thể"], ["台", "tái", "(lượng từ) cái, chiếc (máy móc)"], ["光", "guāng", "chỉ, chỉ có"], ["实在", "shízài", "quả thực, thật sự"], ["制冷", "zhìlěng", "làm lạnh, ướp lạnh"], ["效果", "xiàoguǒ", "hiệu quả"], ["现金", "xiànjīn", "tiền mặt"], ["邀请", "yāoqǐng", "mời"], ["葡萄", "pútao", "quả nho"], ["艺术", "yìshù", "nghệ thuật"], ["广告", "guǎnggào", "quảng cáo"], ["味道", "wèidào", "mùi vị"], ["优点", "yōudiǎn", "ưu điểm"], ["实际", "shíjì", "thực tế"], ["考虑", "kǎolǜ", "suy xét, cân nhắc"], ["标准", "biāozhǔn", "tiêu chuẩn, chuẩn mực"], ["样子", "yàngzi", "kiểu dáng, hình dáng"], ["年龄", "niánlíng", "tuổi (tác)"], ["浪费", "làngfèi", "lãng phí, hoang phí"], ["购物", "gòuwù", "mua sắm, mua hàng"], ["尤其", "yóuqí", "đặc biệt là, nhất là"], ["受到", "shòudào", "nhận được, chịu"], ["任何", "rènhé", "bất cứ, bất kỳ"], ["寄", "jì", "gửi (thư/hàng)"], ["果汁", "guǒzhī", "nước trái cây"], ["售货员", "shòuhuòyuán", "nhân viên bán hàng"], ["袜子", "wàzi", "tất, vớ"], ["打扰", "dǎrǎo", "quấy rầy, làm phiền"], ["竟然", "jìngrán", "không ngờ, vậy mà"], ["西红柿", "xīhóngshì", "cà chua"], ["百分之", "bǎi fēn zhī", "phần trăm"], ["倍", "bèi", "lần (gấp bội)"], ["皮肤", "pífū", "da"], ["好处", "hǎochù", "lợi ích, điều tốt"], ["尝", "cháng", "nếm, thưởng thức"]];
+const ANS = JSON.parse(new TextDecoder().decode(Uint8Array.from(atob("eyJkMHMwcTAiOiAixJHhu5MgZMO5bmcgdHJvbmcgbmjDoCAoxJHhu5MgbuG7mWkgdGjhuqV0KSIsICJkMHMwcTEiOiAiZ2nhuqNtIGdpw6EiLCAiZDBzMHEyIjogImNo4bqldCBsxrDhu6NuZyIsICJkMHMwcTMiOiAiY2jhuq9jIGNo4bqvbiwgbmjhuqV0IMSR4buLbmgiLCAiZDBzMHE0IjogIm5ow6JuIHRp4buHbiwgdGnhu4duIHRo4buDIiwgImQwczBxNSI6ICJ0aeG7gW4gbeG6t3QiLCAiZDBzMXEwIjogInNoxIFmxIEiLCAiZDBzMXExIjogImppw6Bnw6kiLCAiZDBzMXEyIjogImxpw7p4w61uZyIsICJkMHMxcTMiOiAieGnDoG9ndceSIiwgImQwczFxNCI6ICJzaMOtesOgaSIsICJkMHMxcTUiOiAiemjDrGzEm25nIiwgImQwczJxMCI6ICJsxrDhu6NuZyB04burIChtw6F5IG3Ds2MpOiBjw6FpL2NoaeG6v2MiLCAiZDBzMnExIjogImNo4buJLCBjaOG7iSBjw7MiLCAiZDBzMnEyIjogImdp4bqjbSBnacOhIiwgImQwczJxMyI6ICJ0aeG7gW4gbeG6t3QiLCAiZDBzMnE0IjogImNo4bqldCBsxrDhu6NuZyIsICJkMHMycTUiOiAixJHhu5MgbuG7mWkgdGjhuqV0IiwgImQwczNxMCI6ICLmiZPmipgiLCAiZDBzM3ExIjogIui0qOmHjyIsICJkMHMzcTIiOiAi546w6YeRIiwgImQwczNxMyI6ICLpobrkvr8iLCAiZDBzM3E0IjogIuWPsCIsICJkMXMwcTAiOiAibeG7nWkiLCAiZDFzMHExIjogInF14bqjbmcgY8OhbyIsICJkMXMwcTIiOiAixrB1IMSRaeG7g20iLCAiZDFzMHEzIjogInN1eSB4w6l0LCBjw6JuIG5o4bqvYyIsICJkMXMwcTQiOiAibMOjbmcgcGjDrSIsICJkMXMwcTUiOiAixJHhurdjIGJp4buHdCBsw6AsIG5o4bqldCBsw6AiLCAiZDFzMHE2IjogImLhuqV0IGPhu6ksIGLhuqV0IGvhu7MiLCAiZDFzMXEwIjogInfDqGlkw6BvIiwgImQxczFxMSI6ICJiacSBb3pox5RuIiwgImQxczFxMiI6ICJuacOhbmzDrW5nIiwgImQxczFxMyI6ICJnw7J1d8O5IiwgImQxczFxNCI6ICJ4xKtow7NuZ3Now6wiLCAiZDFzMXE1IjogInNow7J1aHXDsnl1w6FuIiwgImQxczJxMCI6ICJuxrDhu5tjIHRyw6FpIGPDonkiLCAiZDFzMnExIjogInThuqV0LCB24bubIiwgImQxczJxMiI6ICJsw6BtIHBoaeG7gW4sIHF14bqleSBy4bqneSIsICJkMXMycTMiOiAiZGEiLCAiZDFzMnE0IjogImzhu6NpIMOtY2gsIMSRaeG7gXUgdOG7kXQiLCAiZDFzMnE1IjogIm7hur9tLCB0aMaw4bufbmcgdGjhu6ljIiwgImQxczNxMCI6ICLpgoDor7ciLCAiZDFzM3ExIjogIuWRs+mBkyIsICJkMXMzcTIiOiAi5rWq6LS5IiwgImQxczNxMyI6ICLotK3niakiLCAiZDFzM3E0IjogIuern+eEtiIsICJkMXMzcTUiOiAi5aW95aSEIiwgImQxczRxMCI6ICLEkMO6bmciLCAiZDFzNHExIjogIlNhaSIsICJkMXM0cTIiOiAixJDDum5nIiwgImQxczRxMyI6ICLEkMO6bmciLCAiZDFzNHE0IjogIlNhaSIsICJkMnMwcTAiOiAi6IKv5a6aIiwgImQyczBxMSI6ICLlr7kiLCAiZDJzMHEyIjogIui2iuadpei2iiIsICJkMnMwcTMiOiAi5bCk5YW2IiwgImQyczBxNCI6ICLlho3or7QiLCAiZDJzMHE1IjogIuWunumZheS4iiIsICJkMnMwcTYiOiAi54m55YirIiwgImQyczBxNyI6ICLlhYkiLCAiZDJzMXEwIjogIuWGjeivtCDigJMgxJHhu5luZyB04burICjEkeG7gyBzYXUgaMOjeSB0w61uaCkiLCAiZDJzMXExIjogIuWGjeivtCDigJMgbGnDqm4gdOG7qyAoaMahbiBu4buvYSwgduG6oyBs4bqhaSkiLCAiZDJzMXEyIjogIuWunumZhSDigJMgdMOtbmggdOG7qyAodGjhu7FjIHThur8sIGPhu6UgdGjhu4MpIiwgImQyczFxMyI6ICLlrp7pmYXkuIog4oCTIHBow7MgdOG7qyAodHLDqm4gdGjhu7FjIHThur8pIiwgImQyczFxNCI6ICLlr7nigKbigKbmnaXor7QgKMSR4buRaSB24bubaS4uLiBtw6AgbsOzaSkiLCAiZDJzMnEwIjogIuiCr+WumiIsICJkMnMycTEiOiAi5YaN6K+0IiwgImQyczJxMiI6ICLlrp7pmYXkuIoiLCAiZDJzMnEzIjogIuWvueKApuKApuadpeivtCIsICJkMnMycTQiOiAi5bCk5YW2IiwgImQyczNxMCI6ICJCQUMiLCAiZDJzM3ExIjogIkJBQyIsICJkMnMzcTIiOiAiQkRBQyIsICJkMnMzcTMiOiAiQkFDIiwgImQzczBxMCI6ICLlkIjpgILvvIjlr7nnmoTvvInogIzkuJTotKjph4/lpb0iLCAiZDNzMHExIjogIlNhaSIsICJkM3MwcTIiOiAiY2jhu4kgbXVhIMSR4buTIGjhu6NwL8SRw7puZywga2jDtG5nIG11YSDEkeG7kyDEkeG6r3QiLCAiZDNzMXEwIjogIuS4pOS4qiIsICJkM3MxcTEiOiAi5bm06L275Lq6IiwgImQzczFxMiI6ICJTYWkiLCAiZDNzMXEzIjogIsSQw7puZyIsICJkM3MycTAiOiAi546w5Zyo5q2j5Zyo5omT5oqY77yM5q+U5bmz5pe25L6/5a6c5LiA5Y2D5Z2X44CCIiwgImQzczJxMSI6ICLmiJHluKbnmoTnjrDph5HkuI3lpJ/vvIznlKjkv6HnlKjljaHlkKfjgIIiLCAiZDNzMnEyIjogIui/meS4quiTneiJsueahOeci+S4iuWOu+S4jemUme+8jOWwseimgei/meS4quWQp+OAgiIsICJkM3MycTMiOiAi5LiD5Z2X6ZKx5LiA5pak77yM5L+d6K+B55m+5YiG5LmL55m+5paw6bKc44CCIiwgImQzczNxMCI6ICLmiZPmipgiLCAiZDNzM3ExIjogIumhuuS+vyIsICJkM3MzcTIiOiAi5Y+wIiwgImQzczNxMyI6ICLotKjph48iLCAiZDNzM3E0IjogIueOsOmHkSIsICJkNHMwcTAiOiAi5a+5IiwgImQ0czBxMSI6ICLlkbPpgZMiLCAiZDRzMHEyIjogIuS+v+WunCIsICJkNHMwcTMiOiAi5omT5omwIiwgImQ0czBxNCI6ICLmtYHooYwiLCAiZDRzMHE1IjogIuearuiCpCIsICJkNHMxcTAiOiAia8eOb2zHnCIsICJkNHMxcTEiOiAiZ3XHjm5nZ8OgbyIsICJkNHMxcTIiOiAibmnDoW5sw61uZyIsICJkNHMxcTMiOiAiecSBb3HHkG5nIiwgImQ0czFxNCI6ICJox45vY2jDuSIsICJkNHMycTAiOiAi6IKv5a6aIiwgImQ0czJxMSI6ICLotormnaXotooiLCAiZDRzMnEyIjogIuWwpOWFtiIsICJkNHMycTMiOiAi5a6e6ZmF5LiKIiwgImQ0czJxNCI6ICLku7vkvZUiLCAiZDRzMnE1IjogIuern+eEtiIsICJkNHMzcTAiOiAixJDDum5nIiwgImQ0czNxMSI6ICJTYWkiLCAiZDRzM3EyIjogIsSQw7puZyIsICJkNHMzcTMiOiAiU2FpIn0="),c=>c.charCodeAt(0))));
+const STORE='hsk4_bai5_ontap';
+let state={};
+try{state=JSON.parse(localStorage.getItem(STORE)||'{}')}catch(e){state={}}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(state))}catch(e){}}
+
+function normPinyin(s){
+  s=(s||'').toLowerCase().trim();
+  const m={'ā':'a','á':'a','ǎ':'a','à':'a','ē':'e','é':'e','ě':'e','è':'e','ī':'i','í':'i','ǐ':'i','ì':'i','ō':'o','ó':'o','ǒ':'o','ò':'o','ū':'u','ú':'u','ǔ':'u','ù':'u','ǖ':'u','ǘ':'u','ǚ':'u','ǜ':'u','ü':'u','ń':'n','ň':'n','ǹ':'n'};
+  s=s.replace(/./g,c=>m[c]||c);
+  return s.replace(/[\s'’·]/g,'').replace(/[0-9]/g,'');
+}
+function normOrder(s){return (s||'').toUpperCase().replace(/[^A-Z]/g,'')}
+function esc(s){return (s+'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+const SCORED=new Set(['mc','fill','select','tf','order']);
+let gcount=0; // đánh số câu chấm điểm mỗi ngày
+
+function renderVocab(){
+  let h='<table>';
+  VOCAB.forEach(v=>{h+=`<tr><td class="h zh">${esc(v[0])}</td><td class="p">${esc(v[1])}</td><td>${esc(v[2])}</td></tr>`});
+  h+='</table>';
+  document.getElementById('vocabBox').innerHTML=h;
+}
+
+function qHTML(q,n){
+  const val=state[q.id];
+  if(q.type==='mc'||q.type==='tf'){
+    const isTF=q.type==='tf';
+    let o=`<div class="opts${isTF?' row':''}">`;
+    q.opts.forEach((op,i)=>{
+      const ck=val===op?'checked':'';
+      o+=`<label class="opt"><input type="radio" name="${q.id}" value="${esc(op)}" ${ck} onchange="setv('${q.id}',this.value)"><span class="${isTF?'':'zh'}">${esc(op)}</span></label>`;
+    });
+    o+='</div>';
+    const hint=q.hint?`<div class="hint">💡 ${esc(q.hint)}</div>`:'';
+    return `<div class="q" id="q_${q.id}"><div class="stem"><span class="num">${n}.</span><span class="zh">${esc(q.q)}</span></div>${hint}${o}</div>`;
+  }
+  if(q.type==='fill'){
+    return `<div class="q" id="q_${q.id}"><div class="stem"><span class="num">${n}.</span><span class="zh">${esc(q.q)}</span></div>
+      <input class="txt" type="text" autocomplete="off" spellcheck="false" placeholder="gõ pinyin…" value="${esc(val||'')}" oninput="setv('${q.id}',this.value)"></div>`;
+  }
+  if(q.type==='select'){
+    let o=`<select class="pick" onchange="setv('${q.id}',this.value)"><option value="">— chọn —</option>`;
+    q.opts.forEach(op=>{o+=`<option class="zh" value="${esc(op)}" ${val===op?'selected':''}>${esc(op)}</option>`});
+    o+='</select>';
+    // câu nối/điền: đề nằm cùng dòng
+    return `<div class="q" id="q_${q.id}"><div class="match-row"><span class="num">${n}.</span><span class="zh">${esc(q.q)}</span></div>${o}</div>`;
+  }
+  if(q.type==='order'){
+    let fr=q.frags.map(f=>`<b class="zh">${esc(f)}</b>`).join('　');
+    return `<div class="q" id="q_${q.id}"><div class="stem"><span class="num">${n}.</span><span class="zh">${fr}</span></div>
+      <input class="txt" type="text" autocomplete="off" placeholder="ví dụ: B A C" value="${esc(val||'')}" oninput="setv('${q.id}',this.value)"></div>`;
+  }
+  if(q.type==='open'){
+    return `<div class="q" id="q_${q.id}"><div class="stem"><span class="num">✎</span><span>${esc(q.q)}</span></div>
+      <textarea class="write" placeholder="Viết câu trả lời của em…" oninput="setv('${q.id}',this.value)">${esc(val||'')}</textarea></div>`;
+  }
+  if(q.type==='video'){
+    const ck=state[q.id+'_done']?'checked':'';
+    return `<div class="q" id="q_${q.id}"><div class="videobox">
+      <div class="task zh">${esc(q.q)}</div>
+      <textarea class="write" placeholder="Ghi chú / dàn ý em định nói (không bắt buộc)…" oninput="setv('${q.id}',this.value)">${esc(val||'')}</textarea>
+      <label class="done-check" style="margin-top:10px"><input type="checkbox" ${ck} onchange="setv('${q.id}_done',this.checked)"> Em đã quay xong &amp; gửi cho cô</label>
+      </div></div>`;
+  }
+  return '';
+}
+
+function setv(id,v){state[id]=v;save()}
+
+function build(){
+  const tabs=document.getElementById('tabs'), days=document.getElementById('days');
+  MODEL.days.forEach((d,di)=>{
+    const t=document.createElement('div');
+    t.className='tab'+(di===0?' active':''); t.id='tab'+di;
+    t.innerHTML=`Ngày ${di+1}<span class="dot"></span>`;
+    t.onclick=()=>showDay(di); tabs.appendChild(t);
+
+    const day=document.createElement('div');
+    day.className='day'+(di===0?' active':''); day.id='day'+di;
+    let h=`<div class="day-head"><h2>${esc(d.title)}</h2><div class="focus">Trọng tâm: ${esc(d.focus)}</div></div>`;
+    let n=0;
+    d.sections.forEach(sec=>{
+      h+=`<div class="section"><h3>${esc(sec.title)}</h3>`;
+      if(sec.note) h+=`<div class="note">${esc(sec.note)}</div>`;
+      if(sec.passage) h+=`<div class="passage zh">${esc(sec.passage)}</div>`;
+      sec.qs.forEach(q=>{
+        let label;
+        if(SCORED.has(q.type)){n++;label=n}else{label=''}
+        h+=qHTML(q,label);
+      });
+      h+='</div>';
+    });
+    h+=`<div class="actions">
+        <button class="btn submit" onclick="grade(${di})">✅ Nộp bài Ngày ${di+1}</button>
+        <button class="btn reset" onclick="resetDay(${di})">↺ Làm lại</button></div>
+        <div class="result" id="res${di}"></div>`;
+    day.innerHTML=h; days.appendChild(day);
+  });
+}
+
+function showDay(di){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===di));
+  document.querySelectorAll('.day').forEach((t,i)=>t.classList.toggle('active',i===di));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function check(q){
+  const v=state[q.id]; const a=ANS[q.id];
+  if(v===undefined||v===null||(''+v).trim()==='') return false;
+  if(q.type==='fill') return normPinyin(v)===normPinyin(a);
+  if(q.type==='order') return normOrder(v)===normOrder(a);
+  return (''+v).trim()===(''+a).trim();
+}
+
+function grade(di){
+  const d=MODEL.days[di]; let total=0,ok=0;
+  d.sections.forEach(sec=>sec.qs.forEach(q=>{
+    if(!SCORED.has(q.type))return;
+    total++;
+    const el=document.getElementById('q_'+q.id);
+    el.classList.remove('correct','wrong');
+    el.querySelectorAll('.mark').forEach(m=>m.remove());
+    // đánh dấu lựa chọn đã chọn
+    el.querySelectorAll('label.opt').forEach(l=>{
+      const inp=l.querySelector('input');
+      l.classList.toggle('chosen', inp && inp.checked);
+    });
+    const good=check(q);
+    if(good){ok++;el.classList.add('correct')}else{el.classList.add('wrong')}
+    // dấu ✔/✘ — KHÔNG hiện đáp án đúng
+    const stem=el.querySelector('.stem')||el.querySelector('.match-row');
+    if(stem){const s=document.createElement('span');s.className='mark '+(good?'ok':'no');s.textContent=good?' ✔':' ✘';stem.appendChild(s)}
+  }));
+  const res=document.getElementById('res'+di);
+  const pct=total?Math.round(ok/total*100):0;
+  let msg,emoji;
+  if(pct>=90){msg='Xuất sắc! Em nhớ bài rất chắc.';emoji='🎉'}
+  else if(pct>=70){msg='Tốt lắm! Cố thêm chút nữa là hoàn hảo.';emoji='👏'}
+  else if(pct>=50){msg='Khá rồi, em xem lại mấy câu sai nhé.';emoji='💪'}
+  else{msg='Cần ôn lại phần này thêm, đừng nản nha!';emoji='🌱'}
+  res.innerHTML=`<div><span class="score">${ok}/${total}</span> câu đúng ${emoji}</div>
+    <div class="bar"><i style="width:${pct}%"></i></div>
+    <div class="msg">${msg} (${pct}%)</div>
+    <div class="note2">Câu tô <b style="color:var(--ok)">xanh ✔</b> là đúng, câu tô <b style="color:var(--no)">đỏ ✘</b> là chưa đúng. Đáp án đầy đủ em hỏi cô nhé — hãy thử tự sửa lại câu đỏ trước.</div>`;
+  res.classList.add('show');
+  state['score_d'+di]={ok,total}; save();
+  document.getElementById('tab'+di).classList.toggle('done',true);
+  res.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function resetDay(di){
+  if(!confirm('Làm lại toàn bộ Ngày '+(di+1)+'? Các câu đã chọn sẽ bị xoá.'))return;
+  const d=MODEL.days[di];
+  d.sections.forEach(sec=>sec.qs.forEach(q=>{delete state[q.id];delete state[q.id+'_done']}));
+  delete state['score_d'+di]; save();
+  // render lại ngày
+  const day=document.getElementById('day'+di);
+  const wasActive=day.classList.contains('active');
+  rebuildDay(di);
+  document.getElementById('tab'+di).classList.remove('done');
+  if(wasActive)day.classList.add('active');
+}
+
+function rebuildDay(di){
+  const d=MODEL.days[di];
+  const day=document.getElementById('day'+di);
+  let h=`<div class="day-head"><h2>${esc(d.title)}</h2><div class="focus">Trọng tâm: ${esc(d.focus)}</div></div>`;
+  let n=0;
+  d.sections.forEach(sec=>{
+    h+=`<div class="section"><h3>${esc(sec.title)}</h3>`;
+    if(sec.note)h+=`<div class="note">${esc(sec.note)}</div>`;
+    if(sec.passage)h+=`<div class="passage zh">${esc(sec.passage)}</div>`;
+    sec.qs.forEach(q=>{let label;if(SCORED.has(q.type)){n++;label=n}else{label=''}h+=qHTML(q,label)});
+    h+='</div>';
+  });
+  h+=`<div class="actions"><button class="btn submit" onclick="grade(${di})">✅ Nộp bài Ngày ${di+1}</button>
+      <button class="btn reset" onclick="resetDay(${di})">↺ Làm lại</button></div><div class="result" id="res${di}"></div>`;
+  day.innerHTML=h;
+}
+
+function toggleVocab(){document.getElementById('vocabBox').classList.toggle('open')}
+
+build(); renderVocab();
+// khôi phục trạng thái "đã nộp" trên tab
+MODEL.days.forEach((d,di)=>{if(state['score_d'+di])document.getElementById('tab'+di).classList.add('done')});
+</script>
+</body></html>
